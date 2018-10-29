@@ -21,14 +21,31 @@ document.addEventListener('DOMContentLoaded',function(){
     const removeTask = function(evento){
         var taskItemNode = evento.target.parentNode;
         var id = taskItemNode.id;
-
         removeIdFromStorage(id);
+        taskItemNode.remove();
+    }
+
+    const toggledCompleted = function(evento){
+        let checkbox = evento.target;
+        let taskItemNode= checkbox.parentNode;
+        let id = taskItemNode.id;
+        let completed = checkbox.checked;
+        let todos = JSON.parse(localStorage.getItem('todos')||[]);
+        todos = todos.map(task=>{
+            if(task.id===id){
+                task.completed= completed;
+            }
+            return task;
+        })
+        localStorage.setItem('todos',JSON.stringify(todos));
     }
 
     const printTask= function(task){
         let taskItemNode = createElement(task);
         taskItemNode.querySelector('[type="button"]')
             .addEventListener('click', removeTask);
+        taskItemNode.querySelector('[type="checkbox"]')
+            .addEventListener('change', toggledCompleted);
         document.querySelector('.taskList').appendChild(taskItemNode);
     }
 
