@@ -1,9 +1,15 @@
 document.addEventListener('DOMContentLoaded',function(){
 
+    const createID = function(){
+        return `taskId-${Date.now()}-${Math.round(Math.random()* 1000)}`;
+    }
     const createElement = function(task){
         let node=document.createElement('div');
         let template= function(task){
-            return `<span>${task}</span>`;
+            console.log(task);
+            return `<div class="" id="${task.id}">
+                        <span>${task.text}</span>
+                </div>`;
 
         };
         node.innerHTML = template(task);
@@ -17,6 +23,12 @@ document.addEventListener('DOMContentLoaded',function(){
         document.querySelector('.taskList').appendChild(taskItemNode);
     }
 
+    const saveToStorage = function(task){
+        const todos= JSON.parse(localStorage.getItem('todos')) || [];
+        todos.push(task);
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }
+
     document.querySelector('.addSection input').addEventListener('keyup'
         ,function (evento){
             let texto= evento.target.value.trim();
@@ -24,8 +36,14 @@ document.addEventListener('DOMContentLoaded',function(){
                 if(texto===''){
                     alert("Nada que guardar")
                 }else {
-                    localStorage.setItem("item",texto);
-                    printTask(texto);
+                    let task={
+                        text: texto,
+                        date: new Date(),
+                        completed: false,
+                        id:createID()
+                    }
+                    saveToStorage(task);
+                    printTask(task);
                 }
             }
 
