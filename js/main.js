@@ -6,9 +6,10 @@ document.addEventListener('DOMContentLoaded',function(){
     const createElement = function(task){
         let node=document.createElement('div');
         let template= function(task){
-            console.log(task);
-            return `<div class="" id="${task.id}">
+               return `<div class="" id="${task.id}">
                         <span>${task.text}</span>
+                        <input type="checkbox" name="completed" ${task.completed ?'checked':''}>
+                        <input type="button" value="Remove">
                 </div>`;
 
         };
@@ -17,9 +18,14 @@ document.addEventListener('DOMContentLoaded',function(){
         return node.firstChild;
 
     }
+    const removeTask = function(evento){
+        alert("PUlsado");
+    }
 
     const printTask= function(task){
         let taskItemNode = createElement(task);
+        taskItemNode.querySelector('[type="button"]')
+            .addEventListener('click', removeTask);
         document.querySelector('.taskList').appendChild(taskItemNode);
     }
 
@@ -44,6 +50,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     }
                     saveToStorage(task);
                     printTask(task);
+                    evento.target.value='';
                 }
             }
 
