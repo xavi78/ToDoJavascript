@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded',function(){
 
     }
     const removeTask = function(evento){
-        alert("PUlsado");
+        var taskItemNode = evento.target.parentNode;
+        var id = taskItemNode.id;
+
+        removeIdFromStorage(id);
     }
 
     const printTask= function(task){
@@ -33,6 +36,12 @@ document.addEventListener('DOMContentLoaded',function(){
         const todos= JSON.parse(localStorage.getItem('todos')) || [];
         todos.push(task);
         localStorage.setItem('todos', JSON.stringify(todos));
+    }
+
+    const removeIdFromStorage = function(id){
+        var todos = JSON.parse(localStorage.getItem('todos')) || [];
+        todos = todos.filter( item => !(item.id===id));
+        localStorage.setItem('todos',JSON.stringify(todos));
     }
 
     document.querySelector('.addSection input').addEventListener('keyup'
